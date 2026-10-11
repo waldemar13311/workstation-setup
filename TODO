@@ -1,1 +1,0 @@
-- dnsmasq: сделать чтобы `sudo brew services restart (или как там перезагрузка делается) dnsmasq` делались без пароля (это нужно для Home-cloud).
