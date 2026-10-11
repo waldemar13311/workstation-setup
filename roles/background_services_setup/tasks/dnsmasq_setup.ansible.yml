@@ -60,6 +60,37 @@
   notify: Restart dnsmasq
   when: ansible_os_family == 'Darwin'
 
+- name: Allow passwordless dnsmasq reload via sudo
+  # Позволяет пользователю, под которым выполняется ansible, делать
+  # `sudo killall -HUP dnsmasq` без пароля (SIGHUP перечитывает конфиг
+  # без рестарта сервиса). Необходимо для работы Home-cloud.
+  # Имя пользователя динамическое: ansible_user
+  # из inventory, а для local-подключений - ansible_user_id.
+  # Правило с точными аргументами (`-HUP dnsmasq`) не даёт NOPASSWD на
+  # другие вызовы killall. validate через visudo не даст записать файл,
+  # ломающий разбор sudoers.
+  become: true
+  ansible.builtin.copy:
+    content: "{{ ansible_user | default(ansible_user_id) }} ALL=(root) NOPASSWD: /usr/bin/killall -HUP dnsmasq\n"
+    dest: /etc/sudoers.d/dnsmasq-reload
+    owner: root
+    mode: "0440"
+    validate: "/usr/sbin/visudo -cf %s"
+  when: ansible_os_family == 'Darwin'
+
+- name: Allow passwordless dnsmasq reload via sudo (Debian)
+  # Аналог для Linux: dnsmasq там под systemd, `sudo systemctl reload
+  # dnsmasq` шлёт dnsmasq SIGHUP (ExecReload юнита) - конфиг перечитывается
+  # без рестарта, тот же эффект, что killall -HUP на macOS.
+  become: true
+  ansible.builtin.copy:
+    content: "{{ ansible_user | default(ansible_user_id) }} ALL=(root) NOPASSWD: /usr/bin/systemctl reload dnsmasq\n"
+    dest: /etc/sudoers.d/dnsmasq-reload
+    owner: root
+    mode: "0440"
+    validate: "/usr/sbin/visudo -cf %s"
+  when: ansible_os_family == 'Debian'
+
 - name: Ensure dnsmasq service is started and enabled (macOS)
   become: true
   community.general.launchd:
