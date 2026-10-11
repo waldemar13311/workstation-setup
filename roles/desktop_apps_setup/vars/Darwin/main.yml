@@ -7,7 +7,42 @@
 # и установленный вручную (см. tasks/darwin_cask_setup.ansible.yml):
 # имя app-бандла роль берёт из метаданных cask, вручную ничего указывать не нужно
 desktop_apps_setup_casks:
+# - Браузеры
+  - firefox
   - google-chrome
+
+# - Код/программирование/devops
   - visual-studio-code
   - font-jetbrains-mono-nerd-font
-  - pika                            # Пипетка для mac
+  - lens
+  - multipass
+  - postman
+  - sublime-text
+  # - intellij-idea
+  # - android-studio
+  # - godot
+  # - lm-studio-bionic  # AI агент для работы с открытыми моделями
+  # - virtualbox
+  # - utm               # Гипервизор под mac
+  # - dbeaver-community # Универсальный БД клиент
+  # - offset-explorer   # Графический kafka клиент
+
+# - Облака
+  # - onedrive
+  # - google-drive
+
+# - Общение
+  # - yandextelemost
+  # - zoom
+
+# Полезные программы/утилиты
+  - keepassxc
+  - vlc
+  - balenaetcher          # Создание загрузочных флешек
+  - alt-tab               # Alt + tab как в Windows
+  - hiddenbar
+  - mos                   # Настройка мыши
+  - notunes               # Фоновая утилита, которая при подключении наушников не включает iTunes
+  - betterdisplay         # Расширенные настройки сторонних экранов
+  # - wireshark-app       # Сетевой сниффер
+  # - punto-switcher
