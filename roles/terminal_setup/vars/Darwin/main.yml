@@ -38,3 +38,4 @@ terminal_setup_console_utils:
   - "gitlab-ci-local" # Для локального запуска gitlab pipeline
   - "curl"            # Не apple-овский curl
   - "openssl@3"       # Пакет для работы с сертификатами
+  # - "ollama"          # llm пакетный менеджер
