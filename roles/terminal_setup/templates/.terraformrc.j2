@@ -29,13 +29,12 @@ provider_installation {
     ]
   }
 
-  # Локальное зеркало для провайдера null (opentofu/null и hashicorp/null)
+  # Локальное зеркало для провайдера null (opentofu/null)
   filesystem_mirror {
     path = "{{ ansible_user_dir }}/.terraform.d/plugins"
     include = [
       "registry.opentofu.org/opentofu/null",
       "registry.terraform.io/opentofu/null",
-      "registry.terraform.io/hashicorp/null",
     ]
   }
 
