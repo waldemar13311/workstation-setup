@@ -16,6 +16,7 @@ desktop_apps_setup_casks:
   - font-jetbrains-mono-nerd-font
   - lens
   - multipass
+  - orbstack
   - postman
   - sublime-text
   # - intellij-idea
