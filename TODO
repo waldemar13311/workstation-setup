@@ -1,1 +1,2 @@
 - Добавить установку vault-cli от HashiCorp через yandex mirror (как в macos, так и в linux)
+- Сделать, чтобы git branch было через cat, а не less
