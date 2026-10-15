@@ -27,6 +27,7 @@ terminal_setup_console_utils:
   - "ncdu"            # Анализатор занятого дискового пространства
   - "tldr"            # Упрощенные и лаконичные man-страницы
   - "uv"              # Современный менеджер пакетов для python
+  - "ansible-lint"    # Линтер для ansible
   - "tenv"            # Универсальный установщик OpenTofu, Terraform, Terragrunt и Atmos
   - "docker"          # Консольный Docker CLI клиент (команды docker ps, run, build)
   - "docker-compose"  # v2 версия docker compose плагина
