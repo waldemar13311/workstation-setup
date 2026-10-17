@@ -29,7 +29,7 @@ provider_installation {
     ]
   }
 
-  # Локальное зеркало для провайдера null (opentofu/null)
+  # Локальное зеркало для провайдера opentofu/null
   filesystem_mirror {
     path = "{{ ansible_user_dir }}/.terraform.d/plugins"
     include = [
@@ -38,7 +38,7 @@ provider_installation {
     ]
   }
 
-  # Локальное зеркало для провайдера hashicorp/local (hashicorp/local)
+  # Локальное зеркало для провайдера hashicorp/local
   filesystem_mirror {
     path = "{{ ansible_user_dir }}/.terraform.d/plugins"
     include = [
