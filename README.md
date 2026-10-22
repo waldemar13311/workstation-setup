@@ -16,7 +16,7 @@
 ### Что нужно
 
 - Контроллер: [uv](https://docs.astral.sh/uv/) - зависимости Ansible ставит `uv sync`.
-- macOS-хост: установленный [Homebrew](https://brew.sh), остальное роль ставит сама.
+- macOS-хост: установленный [Homebrew](https://brew.sh), остальное роль ставит сама; пользователь с правами sudo (настройка логин-шелла идёт с `become`).
 - Ubuntu-хост: 24.04 (noble) или новее, пользователь с правами sudo (apt-таски выполняются с `become`).
 
 ### Подготовка
@@ -63,13 +63,15 @@ ansible-galaxy collection install -r .ansible/requirements.yml
 
 ```bash
 # терминал: zsh, плагины, тема, утилиты, vim, docker completion
-ansible-playbook playbooks/terminal_setup.ansible.yml --limit localhost
+# -K (--ask-become-pass): настройка логин-шелла (zsh из brew в /etc/shells
+# и UserShell) выполняется с become - попросит пароль sudo
+ansible-playbook playbooks/terminal_setup.ansible.yml --limit localhost -K
 
 # на удалённом macos-хосте из inventory.yml
-ansible-playbook playbooks/terminal_setup.ansible.yml --limit macos
+ansible-playbook playbooks/terminal_setup.ansible.yml --limit macos -K
 
 # на удалённом ubuntu-хосте из inventory.yml
-# -K (--ask-become-pass): apt-таски выполняются с become, попросит пароль sudo
+# -K: apt-таски выполняются с become, попросит пароль sudo
 ansible-playbook playbooks/terminal_setup.ansible.yml --limit ubuntu -K
 ```
 
@@ -118,7 +120,7 @@ ansible-playbook playbooks/desktop_apps_setup.ansible.yml --limit ubuntu -K
 
 - Установка apt-пакетов и .deb требует прав root: на apt-тасках включается `become`, поэтому при запуске нужен `-K`/`--ask-become-pass` (или NOPASSWD sudo на целевом хосте).
 - antidote ставится не из пакетов, а git-клоном в `~/.local/share/antidote` (пин на релиз, см. `defaults/main/antidote_vars.yml`).
-- Оболочка по умолчанию для пользователя переключается на zsh (на macOS это и так default).
+- Оболочка по умолчанию для пользователя переключается на zsh. На macOS роль вдобавок ставит zsh из Homebrew и назначает его логин-шеллом вместо системного (`tasks/zsh_setup.ansible.yml`, тоже с `become` - поэтому `-K` нужен и на macOS).
 - `bat`/`fd` в Ubuntu называются `batcat`/`fdfind` - роль создаёт симлинки в `~/.local/bin`.
 - `fzf`, `kubectl`, `uv`, `tenv`, `fastfetch`, `gitlab-ci-local` в apt отсутствуют или устарели - ставятся в `~/.local/bin` без прав root (таски в `tasks/debian_tools/`, параметры в `vars/Debian/*_vars.yml`):
   - `fzf` - свежий релиз с GitHub (apt-версия 0.44 слишком старая для виджетов роли);

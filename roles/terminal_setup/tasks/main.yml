@@ -87,6 +87,10 @@
     name: "{{ terminal_setup_console_utils }}"
     state: present
 
+- name: Configure zsh (make brew zsh as login shell, macOS)
+  # Идёт после установки пакетов: brew zsh должен быть уже на месте
+  ansible.builtin.include_tasks: zsh_setup.ansible.yml
+
 - name: Set zsh as the login shell (Debian)
   # На macOS zsh - оболочка по умолчанию со времён Catalina, менять нечего.
   # Идёт после установки пакетов: zsh должен быть уже на месте

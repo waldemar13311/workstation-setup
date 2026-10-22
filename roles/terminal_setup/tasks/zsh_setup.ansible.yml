@@ -1,0 +1,31 @@
+---
+# macOS: назначение brew-шного zsh логин-шеллом. Сама установка zsh - в общем
+# списке terminal_setup_console_utils (vars/Darwin).
+
+- name: Resolve Homebrew prefix
+  ansible.builtin.command: brew --prefix
+  register: terminal_setup_brew_prefix
+  changed_when: false
+  check_mode: false
+
+- name: Set fact for brew zsh path
+  ansible.builtin.set_fact:
+    # /opt/homebrew на Apple Silicon, /usr/local на Intel
+    terminal_setup_brew_zsh: "{{ terminal_setup_brew_prefix.stdout }}/bin/zsh"
+
+- name: Ensure brew zsh is in /etc/shells
+  # chsh и некоторые инструменты (cron, sshd) принимают только шеллы из этого
+  # списка. ansible.builtin.user на macOS меняет UserShell через dscl и список
+  # не проверяет, но путь всё равно нужен для ручных chsh и корректности
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/shells
+    line: "{{ terminal_setup_brew_zsh }}"
+
+- name: Set brew zsh as the login shell (macOS)
+  # Аналог `chsh -s`, но идемпотентно: user-модуль меняет UserShell через dscl
+  # только если значение отличается от текущего.
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: "{{ terminal_setup_brew_zsh }}"
