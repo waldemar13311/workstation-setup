@@ -11,6 +11,15 @@ provider_installation {
     ]
   }
 
+  # Локальное зеркало для провайдера robertdebock/orbstack
+  filesystem_mirror {
+    path = "/Users/vshmakoviv/.terraform.d/plugins"
+    include = [
+      "registry.opentofu.org/robertdebock/orbstack",
+      "registry.terraform.io/robertdebock/orbstack",
+    ]
+  }
+
   # Локальное зеркало для провайдера opentofu/vault
   filesystem_mirror {
     path = "{{ ansible_user_dir }}/.terraform.d/plugins"
