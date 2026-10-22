@@ -22,3 +22,13 @@
     - { name: "color.status.header", value: "normal" }
     - { name: "color.decorate.branch", value: "brightgreen" }
     - { name: "color.decorate.HEAD", value: "brightcyan" }
+
+- name: Print git branch without pager (like cat)
+  # git branch открывается в less даже при коротком списке веток - неудобно.
+  # pager.branch=false отключает пейджер только для branch: вывод идёт прямо
+  # в терминал, как у cat. git log и остальные подкоманды продолжают использовать
+  # пейджер.
+  community.general.git_config:
+    name: pager.branch
+    value: "false"
+    scope: global
