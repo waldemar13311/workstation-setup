@@ -23,9 +23,6 @@
 - name: Configure Vim
   ansible.builtin.include_tasks: vim_setup.ansible.yml
 
-- name: Configure git
-  ansible.builtin.include_tasks: git_setup.ansible.yml
-
 - name: Configure terraform
   ansible.builtin.include_tasks: terraform_setup.ansible.yml
 
@@ -86,6 +83,9 @@
   ansible.builtin.package:
     name: "{{ terminal_setup_console_utils }}"
     state: present
+
+- name: Configure git
+  ansible.builtin.include_tasks: git_setup.ansible.yml
 
 - name: Configure zsh (make brew zsh as login shell, macOS)
   # Идёт после установки пакетов: brew zsh должен быть уже на месте
