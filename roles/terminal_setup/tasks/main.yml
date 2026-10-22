@@ -34,14 +34,18 @@
     paths: "{{ ansible_user_dir }}"
     depth: 5
     patterns: ".zcompdump*"
+    hidden: true
     recurse: true
     file_type: file
   register: terminal_setup_found_zcompdump_files
 
 - name: Remove found zcompdump files
+  # changed_when: false - changed здесь норма (любой новый терминал после
+  # прошлого прогона пересоздаёт дампы, и они снова удаляются), шум не нужен
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: absent
+  changed_when: false
   loop: "{{ terminal_setup_found_zcompdump_files.files }}"
 
 - name: Install git (Debian)
