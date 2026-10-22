@@ -38,9 +38,9 @@ alias python="python3"
 # Управление Docker-окружением (Colima) - только если colima установлен
 # (на macOS это замена Docker Desktop, на Linux Docker работает нативно)
 if (( $+commands[colima] )); then
-    alias docker-start="colima start --cpus 4 --memory 8 --disk 60"
-    alias docker-stop="colima stop"
-    alias docker-stat="colima status"
+    alias colima-start="colima start --cpus 4 --memory 8 --disk 60"
+    alias colima-stop="colima stop"
+    alias colima-status="colima status"
 fi
 
 # In networking, the official term for emptying a cache is "flushing"
