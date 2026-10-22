@@ -33,8 +33,5 @@
     mode: "0755"
     remote_src: true
 
-- name: Install vault zsh completion (Debian)
-  ansible.builtin.copy:
-    src: completions/_vault
-    dest: "{{ [terminal_setup_config_dir, 'completion', '_vault'] | path_join }}"
-    mode: "0644"
+# Автодополнение vault (_vault) разворачивается общей задачей
+# Deploy custom zsh completions в tasks/main.yml из files/completions/.

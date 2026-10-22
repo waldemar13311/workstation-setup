@@ -3,9 +3,11 @@
 # (библиотека hashicorp/cli). Если заданы COMP_LINE/COMP_POINT, `vault` вместо
 # выполнения команды печатает по строке на кандидата для текущей позиции
 # курсора (проверено: COMP_LINE="vault se" -> "secrets", "server").
-# Файл кладётся в $ZDOTDIR/completion - каталог добавлен в fpath в .zshrc,
-# compinit связывает функцию с командой по тегу #compdef выше; роль чистит
-# zcompdump при каждом прогоне, так что файл подхватывается сразу.
+# Файл кладётся в $ZDOTDIR/completion общей задачей Deploy custom zsh
+# completions (tasks/main.yml разворачивает весь files/completions/) - каталог
+# добавлен в fpath в .zshrc, compinit связывает функцию с командой по тегу
+# #compdef выше; роль чистит zcompdump при каждом прогоне, так что файл
+# подхватывается сразу.
 # Не используем `vault -autocomplete-install`: он дописывает в ~/.zshrc,
 # который в этом сетапе не читается (ZDOTDIR переносит конфиги в XDG), и
 # жёстко вписывает абсолютный путь к бинарнику в момент установки.

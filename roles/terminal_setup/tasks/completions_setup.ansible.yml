@@ -1,0 +1,14 @@
+---
+# Кастомные файлы автодополнения: единая точка деплоя files/completions/.
+- name: Deploy custom zsh completions (files/completions/ -> $ZDOTDIR/completion)
+  # Единая точка для кастомных файлов автодополнения: всё, что лежит в
+  # files/completions/, попадает в $ZDOTDIR/completion (каталог в fpath через
+  # .zshrc). Чтобы добавить комплишен утилите - положите файл _<имя> в этот
+  # каталог роли. Сгенерированные из утилит файлы (_docker из docker_setup)
+  # живут в том же каталоге, но управляются своими задачами - поэтому copy
+  # лишние файлы на таргете не удаляет, только раскладывает свои
+  ansible.builtin.copy:
+    src: completions/
+    dest: "{{ [terminal_setup_config_dir, 'completion'] | path_join }}"
+    mode: "0644"
+    directory_mode: "0755"

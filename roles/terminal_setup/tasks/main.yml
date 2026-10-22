@@ -244,3 +244,6 @@
 
 - name: Configure Docker and generate completions
   ansible.builtin.include_tasks: docker_setup.ansible.yml
+
+- name: Deploy custom zsh completions
+  ansible.builtin.include_tasks: completions_setup.ansible.yml

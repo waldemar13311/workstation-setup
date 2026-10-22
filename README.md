@@ -109,6 +109,7 @@ ansible-playbook playbooks/desktop_apps_setup.ansible.yml --limit ubuntu -K
 Роли построены по одному паттерну: запись в списке переменных + файл-рецепт. Куда добавить:
 
 - **Плагин zsh** - список `terminal_setup_zsh_plugins` в `roles/terminal_setup/defaults/main/zsh_plugins.yml` (формат antidote).
+- **Автодополнение zsh-команды** - файл `_<имя>` в `roles/terminal_setup/files/completions/`; каталог целиком разворачивается в `~/.config/zsh/completion` задачей `Deploy custom zsh completions`.
 - **Консольная утилита**, которая есть в Homebrew/apt - список `terminal_setup_modern_console_utils` или `terminal_setup_console_utils` в `roles/terminal_setup/vars/Darwin/main.yml` (Homebrew) / `vars/Debian/main.yml` (apt).
 - **Консольная утилита без apt-пакета** (Debian) - по рецепту в `vars/Debian/main.yml` (`terminal_setup_debian_extra_tools`): vars-файл в `vars/Debian/`, таск в `tasks/debian_tools/`, запись в списке.
 - **Консольная утилита в обход Homebrew** (macOS) - по рецепту в `vars/Darwin/main.yml` (`terminal_setup_darwin_extra_tools`): vars-файл в `vars/Darwin/`, таск в `tasks/darwin_tools/`, запись в списке.
