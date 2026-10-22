@@ -38,5 +38,8 @@ terminal_setup_console_utils:
   - "fastfetch"       # Вывод базовой информации о системе
   - "gitlab-ci-local" # Для локального запуска gitlab pipeline
   - "curl"            # Не apple-овский curl
+  - "git"             # Git из brew вместо системного (бинарник линкуется
+                      # в /opt/homebrew/bin и через brew shellenv в .zshrc
+                      # автоматически становится первым в PATH)
   - "openssl@3"       # Пакет для работы с сертификатами
   # - "ollama"          # llm пакетный менеджер
