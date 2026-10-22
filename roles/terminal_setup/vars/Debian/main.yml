@@ -40,6 +40,7 @@ terminal_setup_console_utils:
   - "vim"                 # Текстовый редактор
   - "htop"                # Консольный диспетчер задач
   - "curl"                # Загрузчик файлов
+  - "unzip"               # Распаковка zip
   - "openssl"             # Пакет для работы с сертификатами
   # Дальше - полный паритет с Darwin-списком, но этих пакетов в apt нет
   # (или apt-версии устарели), поэтому они закомментированы: ставятся отдельными
@@ -65,3 +66,4 @@ terminal_setup_debian_extra_tools:
   - "tenv"             # .deb из релиза GitHub
   - "fastfetch"        # .deb из релиза GitHub
   - "gitlab_ci_local"  # бинарник из релиза GitHub
+  - "vault"            # zip из Yandex-зеркала releases.hashicorp.com (в apt нет)

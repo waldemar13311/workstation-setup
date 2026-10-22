@@ -1,0 +1,20 @@
+#compdef vault
+# Автодополнение vault: делегируем встроенному в бинарник механизму HashiCorp
+# (библиотека hashicorp/cli). Если заданы COMP_LINE/COMP_POINT, `vault` вместо
+# выполнения команды печатает по строке на кандидата для текущей позиции
+# курсора (проверено: COMP_LINE="vault se" -> "secrets", "server").
+# Файл кладётся в $ZDOTDIR/completion - каталог добавлен в fpath в .zshrc,
+# compinit связывает функцию с командой по тегу #compdef выше; роль чистит
+# zcompdump при каждом прогоне, так что файл подхватывается сразу.
+# Не используем `vault -autocomplete-install`: он дописывает в ~/.zshrc,
+# который в этом сетапе не читается (ZDOTDIR переносит конфиги в XDG), и
+# жёстко вписывает абсолютный путь к бинарнику в момент установки.
+_vault() {
+  local -a candidates
+  # COMP_LINE - вся командная строка целиком, COMP_POINT - смещение курсора
+  # в ней (0-based); Tab дополняет слово в конце строки, поэтому длина строки
+  local -x COMP_LINE="${words[*]}"
+  local -x COMP_POINT=$(( ${#COMP_LINE} ))
+  candidates=(${(f)"$("$words[1]" 2>/dev/null)"})
+  _describe 'vault subcommand' candidates
+}

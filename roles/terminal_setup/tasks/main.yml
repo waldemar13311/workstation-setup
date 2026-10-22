@@ -127,10 +127,22 @@
 
 - name: Install tools missing from apt (Debian)
   # Один файл на инструмент: tasks/debian_tools/<tool>_setup.ansible.yml.
-  # Список инструментов и рецепт добавления новых - в vars/Debian/main.yml
+  # Список инструментов и способ добавления новых - в vars/Debian/main.yml
   ansible.builtin.include_tasks: "debian_tools/{{ item }}_setup.ansible.yml"
   loop: "{{ terminal_setup_debian_extra_tools }}"
   when: ansible_os_family == 'Debian'
+
+- name: Set macOS arch suffix for binary downloads (Darwin)
+  when: ansible_os_family == 'Darwin'
+  ansible.builtin.set_fact:
+    terminal_setup_darwin_arch: "{{ terminal_setup_darwin_arch_map[ansible_architecture] }}"
+
+- name: Install tools not installed via Homebrew (macOS)
+  # Один файл на инструмент: tasks/darwin_tools/<tool>_setup.ansible.yml.
+  # Список инструментов и способ добавления новых - в vars/Darwin/main.yml
+  ansible.builtin.include_tasks: "darwin_tools/{{ item }}_setup.ansible.yml"
+  loop: "{{ terminal_setup_darwin_extra_tools }}"
+  when: ansible_os_family == 'Darwin'
 
 - name: Ensure zsh XDG directories exist
   ansible.builtin.file:

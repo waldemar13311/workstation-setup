@@ -111,6 +111,7 @@ ansible-playbook playbooks/desktop_apps_setup.ansible.yml --limit ubuntu -K
 - **Плагин zsh** - список `terminal_setup_zsh_plugins` в `roles/terminal_setup/defaults/main/zsh_plugins.yml` (формат antidote).
 - **Консольная утилита**, которая есть в Homebrew/apt - список `terminal_setup_modern_console_utils` или `terminal_setup_console_utils` в `roles/terminal_setup/vars/Darwin/main.yml` (Homebrew) / `vars/Debian/main.yml` (apt).
 - **Консольная утилита без apt-пакета** (Debian) - по рецепту в `vars/Debian/main.yml` (`terminal_setup_debian_extra_tools`): vars-файл в `vars/Debian/`, таск в `tasks/debian_tools/`, запись в списке.
+- **Консольная утилита в обход Homebrew** (macOS) - по рецепту в `vars/Darwin/main.yml` (`terminal_setup_darwin_extra_tools`): vars-файл в `vars/Darwin/`, таск в `tasks/darwin_tools/`, запись в списке.
 - **Десктопное приложение:**
   - macOS - cask в `desktop_apps_setup_casks` (`roles/desktop_apps_setup/vars/Darwin/main.yml`);
   - Ubuntu - apt-пакет в `desktop_apps_setup_apt_packages` или рецепт `desktop_apps_setup_debian_extra_apps` в `vars/Debian/main.yml` (apt, официальный `.deb`, GitHub или другой способ).
@@ -122,10 +123,11 @@ ansible-playbook playbooks/desktop_apps_setup.ansible.yml --limit ubuntu -K
 - antidote ставится не из пакетов, а git-клоном в `~/.local/share/antidote` (пин на релиз, см. `defaults/main/antidote_vars.yml`).
 - Оболочка по умолчанию для пользователя переключается на zsh. На macOS роль вдобавок ставит zsh из Homebrew и назначает его логин-шеллом вместо системного (`tasks/zsh_setup.ansible.yml`, тоже с `become` - поэтому `-K` нужен и на macOS).
 - `bat`/`fd` в Ubuntu называются `batcat`/`fdfind` - роль создаёт симлинки в `~/.local/bin`.
-- `fzf`, `kubectl`, `uv`, `tenv`, `fastfetch`, `gitlab-ci-local` в apt отсутствуют или устарели - ставятся в `~/.local/bin` без прав root (таски в `tasks/debian_tools/`, параметры в `vars/Debian/*_vars.yml`):
+- `fzf`, `kubectl`, `uv`, `tenv`, `fastfetch`, `gitlab-ci-local`, `vault` в apt отсутствуют или устарели - ставятся в `~/.local/bin` без прав root (таски в `tasks/debian_tools/`, параметры в `vars/Debian/*_vars.yml`):
   - `fzf` - свежий релиз с GitHub (apt-версия 0.44 слишком старая для виджетов роли);
   - `kubectl` - последний стабильный релиз (резолвится при прогоне, хеш сверяется по `.sha256`);
   - `tenv`, `fastfetch`, `gitlab-ci-local` - пиновые версии релизов (обновляются правкой пина в vars);
+  - `vault` - zip из Yandex-зеркала releases.hashicorp.com, пиновая версия, хеш сверяется по `SHA256SUMS` зеркала;
   - `uv` - официальный инсталлятор, обновление - `uv self update`.
 
 ## License

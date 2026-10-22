@@ -2,6 +2,12 @@
 # Переменные для macOS (Homebrew).
 # Подключаются в tasks/main.yml по ansible_os_family == 'Darwin'.
 
+# Соответствие ansible_architecture -> суффикс релизов (darwin_*)
+# (используется в *_vars.yml для скачивания бинарников)
+terminal_setup_darwin_arch_map:
+  x86_64: "amd64"
+  arm64: "arm64"
+
 # Путь к antidote.zsh - используется в .zshrc и хендлере инициализации плагинов
 terminal_setup_antidote_init: "$(brew --prefix)/opt/antidote/share/antidote/antidote.zsh"
 
@@ -42,3 +48,13 @@ terminal_setup_console_utils:
   - "zsh"             # Zsh из brew, назначается логин-шеллом по умолчанию в tasks/zsh_setup.ansible.yml
   - "openssl@3"       # Пакет для работы с сертификатами
   # - "ollama"          # llm пакетный менеджер
+
+# Инструменты, которые ставим не через Homebrew - аналог
+# terminal_setup_debian_extra_tools, по файлу на инструмент. Чтобы добавить
+# новый:
+#   1) допишите имя в этот список;
+#   2) создайте vars/Darwin/<имя>_vars.yml - параметры установки (URL, версия, пин);
+#   3) создайте tasks/darwin_tools/<имя>_setup.ansible.yml - шаги установки
+#      по аналогии с соседними файлами.
+terminal_setup_darwin_extra_tools:
+  - "vault"  # бинарник из Yandex-зеркала releases.hashicorp.com

@@ -1,0 +1,46 @@
+---
+# vault: zip из Yandex-зеркала releases.hashicorp.com;
+# бинарник копируется в ~/.local/bin (каталог в PATH через
+# variables.zsh). Ссылка и пиновая версия - в vars/Darwin/vault_vars.yml.
+- name: Ensure ~/.local/bin exists (macOS)
+  ansible.builtin.file:
+    path: "{{ [ansible_user_dir, '.local/bin'] | path_join }}"
+    state: directory
+    mode: "0755"
+
+- name: Download vault zip (macOS)
+  # checksum: SHA256SUMS зеркала - get_url сам сверит хеш скачанного zip
+  ansible.builtin.get_url:
+    url: >-
+      {{ terminal_setup_vault_url_base }}/vault/{{ terminal_setup_vault_version }}/vault_{{
+      terminal_setup_vault_version }}_darwin_{{ terminal_setup_darwin_arch }}.zip
+    dest: "/tmp/vault-{{ terminal_setup_vault_version }}.zip"
+    mode: "0644"
+    checksum: >-
+      sha256:{{ terminal_setup_vault_url_base }}/vault/{{ terminal_setup_vault_version }}/vault_{{
+      terminal_setup_vault_version }}_SHA256SUMS
+
+- name: Ensure vault extract directory exists (macOS)
+  ansible.builtin.file:
+    path: "/tmp/vault-{{ terminal_setup_vault_version }}-extracted"
+    state: directory
+    mode: "0755"
+
+- name: Extract vault binary (macOS)
+  ansible.builtin.unarchive:
+    src: "/tmp/vault-{{ terminal_setup_vault_version }}.zip"
+    dest: "/tmp/vault-{{ terminal_setup_vault_version }}-extracted"
+    creates: "/tmp/vault-{{ terminal_setup_vault_version }}-extracted/vault"
+
+- name: Install vault to ~/.local/bin (macOS)
+  ansible.builtin.copy:
+    src: "/tmp/vault-{{ terminal_setup_vault_version }}-extracted/vault"
+    dest: "{{ [ansible_user_dir, '.local/bin', 'vault'] | path_join }}"
+    mode: "0755"
+    remote_src: true
+
+- name: Install vault zsh completion (macOS)
+  ansible.builtin.copy:
+    src: completions/_vault
+    dest: "{{ [terminal_setup_config_dir, 'completion', '_vault'] | path_join }}"
+    mode: "0644"
