@@ -637,3 +637,29 @@ sudo() {
   fi
 }
 # endregion
+
+# region === get-public-ip ===
+# get-public-ip - Выводит внешний IP-адрес с флагом страны
+# Источник данных: https://ipwho.is/?lang=ru - бесплатно, без ключа, отдаёт
+# и ip, и название страны на русском, и готовый флаг-эмодзи (.flag.emoji)
+# Зависимости - только curl и jq, которые и так ставятся ролью.
+# Встроенный терминал VS Code (xterm.js) флаги-эмодзи не рендерит: не склеивает
+# пары региональных индикаторов в один глиф - вместо флага тофу. VS Code
+# выставляет TERM_PROGRAM=vscode, там печатаем название страны текстом.
+get-public-ip() {
+  local json
+
+  if ! json="$(curl -s --max-time 5 'https://ipwho.is/?lang=ru')" || [[ -z "$json" ]]; then
+    echo "get-public-ip: не удалось получить данные с ipwho.is" >&2
+    return 1
+  fi
+
+  if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+    jq -r 'select(.success == true) | "\(.ip) \(.country)"' <<< "$json" ||
+      { echo "get-public-ip: ipwho.is вернул ошибку" >&2; return 1 }
+  else
+    jq -r 'select(.success == true) | "\(.ip) \(.flag.emoji)"' <<< "$json" ||
+      { echo "get-public-ip: ipwho.is вернул ошибку" >&2; return 1 }
+  fi
+}
+# endregion
